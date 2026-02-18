@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw Setup Guide - GenHealth Reference</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --midnight: #1a2332;
+            --white: #ffffff;
+            --accent: #10b981;
+            --light-gray: #f8fafc;
+            --border: #e2e8f0;
+            --text-dark: #334155;
+            --text-light: #64748b;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--light-gray);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--midnight);
+        }
+
+        /* Progress bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--border);
+            z-index: 1000;
+        }
+
+        #progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Slide container */
+        .slides-container {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+        }
+
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+
+        .slide-content {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        /* Title slide */
+        .title-slide {
+            background: linear-gradient(135deg, var(--midnight) 0%, #2d3e56 100%);
+            color: var(--white);
+        }
+
+        .title-slide .slide-content {
+            background: transparent;
+            text-align: center;
+            box-shadow: none;
+        }
+
+        .title-slide h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .title-slide .subtitle {
+            font-size: 1.5rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+        }
+
+        .title-slide .meta {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Regular slides */
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--midnight);
+        }
+
+        p, li {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.75rem;
+        }
+
+        code {
+            background: var(--light-gray);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: var(--midnight);
+        }
+
+        .info-box {
+            background: #ecfdf5;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 4px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .card {
+            background: var(--light-gray);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--light-gray);
+            font-weight: 600;
+            color: var(--midnight);
+        }
+
+        /* Slide number */
+        .slide-number {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Navigation hint */
+        .nav-hint {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-light);
+            font-size: 0.9rem;
+            opacity: 0.7;
+            z-index: 100;
+        }
+
+        @media (max-width: 768px) {
+            .title-slide h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .slide-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="progress-bar">
+        <div id="progress-fill"></div>
+    </div>
+
+    <div class="slides-container" id="slides">
+        <!-- Slide 1: Title -->
+        <section class="slide title-slide">
+            <div class="slide-content">
+                <h1>OpenClaw Setup Guide</h1>
+                <p class="subtitle">Complete Reference for GenHealth Deployment</p>
+                <p class="meta">Architecture documentation for Mike's personal AI assistant instance<br>
+                Version: OpenClaw v2026.2.17 | February 2026</p>
+            </div>
+            <span class="slide-number">1 / 18</span>
+        </section>
+
+        <!-- Slide 2: Infrastructure Overview -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Infrastructure Overview</h2>
+                
+                <div class="info-box">
+                    <strong>Hardware:</strong> Mac mini (Apple Silicon M-series)<br>
+                    <strong>OS:</strong> macOS (Darwin 25.2.0, arm64)
+                </div>
+
+                <h3>Core Components</h3>
+                <ul>
+                    <li><strong>OpenClaw:</strong> v2026.2.17 (npm global install)</li>
+                    <li><strong>Node.js:</strong> v25.4.0</li>
+                    <li><strong>Gateway:</strong> Port 18789 (loopback-bound)</li>
+                    <li><strong>Process Manager:</strong> PM2 (for cron jobs, APIs, background services)</li>
+                </ul>
+
+                <h3>Remote Access</h3>
+                <ul>
+                    <li><strong>Tailscale serve</strong> — Secure remote access to gateway and local apps</li>
+                    <li><strong>Tailscale funnel</strong> — Public endpoints for voice calls (Twilio webhooks)</li>
+                    <li><strong>Base URL:</strong> <code>https://mikes-mac-mini.platy-paradise.ts.net</code></li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Note:</strong> Gateway is bound to loopback (127.0.0.1) for security. All external access goes through Tailscale.
+                </div>
+            </div>
+            <span class="slide-number">2 / 18</span>
+        </section>
+
+        <!-- Slide 3: Authentication & Models -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Authentication & Models</h2>
+                
+                <h3>Anthropic Claude Setup</h3>
+                <div class="card">
+                    <p><strong>Plan:</strong> Claude Max (consumer subscription)</p>
+                    <p><strong>Auth Mode:</strong> OAuth (not API keys)</p>
+                    <p><strong>Profile:</strong> <code>anthropic:default</code></p>
+                    <p><strong>Account:</strong> mike@mamv.co</p>
+                </div>
+
+                <h3>Model Tier Strategy</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Use Case</th>
+                            <th>Model</th>
+                            <th>Why</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Main session (direct conversation)</td>
+                            <td>claude-opus-4-6</td>
+                            <td>Complex reasoning, decisions, planning</td>
+                        </tr>
+                        <tr>
+                            <td>Sub-agents, cron jobs</td>
+                            <td>claude-sonnet-4-5</td>
+                            <td>Content generation, research, bulk work</td>
+                        </tr>
+                        <tr>
+                            <td>Heartbeats, triage</td>
+                            <td>claude-haiku-4-5</td>
+                            <td>Fast checks, routing, low-cost polling</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <strong>Cost optimization:</strong> Main session uses Opus for quality. Automated tasks use Sonnet (good quality, lower cost). Heartbeats use Haiku (very cheap, fast).
+                </div>
+            </div>
+            <span class="slide-number">3 / 18</span>
+        </section>
+
+        <!-- Slide 4: Channel Integrations - Slack -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Channel Integrations: Slack</h2>
+                
+                <div class="info-box">
+                    <strong>Primary channel for GenHealth deployment</strong>
+                </div>
+
+                <h3>Configuration</h3>
+                <ul>
+                    <li><strong>Workspace:</strong> genhealthai.slack.com</li>
+                    <li><strong>Mode:</strong> Socket Mode (no public webhooks needed)</li>
+                    <li><strong>Bot token:</strong> <code>xoxb-*</code> (channels, messaging, reactions)</li>
+                    <li><strong>App token:</strong> <code>xapp-*</code> (Socket Mode connection)</li>
+                </ul>
+
+                <h3>Access Control</h3>
+                <ul>
+                    <li><strong>DM allowlist:</strong> Specific users can message bot directly</li>
+                    <li><strong>Group allowlist:</strong> Private channels/groups the bot participates in</li>
+                    <li><strong>Public channels:</strong> <code>requireMention: true</code> (bot only responds when @mentioned)</li>
+                </ul>
+
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Message sending, editing, deletion</li>
+                    <li>Reactions (emoji responses)</li>
+                    <li>Thread support</li>
+                    <li>Rich formatting (markdown, attachments)</li>
+                    <li>Search via user token (<code>search.messages</code> API)</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Important:</strong> The bot token has limited read scopes. For reading channel history, use the user token + <code>search.messages</code> API.
+                </div>
+            </div>
+            <span class="slide-number">4 / 18</span>
+        </section>
+
+        <!-- Slide 5: Channel Integrations - iMessage & Voice -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Channel Integrations: iMessage & Voice</h2>
+                
+                <h3>iMessage (Personal Use)</h3>
+                <div class="card">
+                    <p><strong>CLI:</strong> <code>imsg</code> (local macOS integration)</p>
+                    <p><strong>Access:</strong> Allowlist-based DM policy</p>
+                    <p><strong>Features:</strong> Send/receive texts, group chat detection, reaction support</p>
+                    <p><strong>GenHealth relevance:</strong> Likely NOT needed (Slack-only deployment expected)</p>
+                </div>
+
+                <h3>Voice Calls</h3>
+                <div class="card">
+                    <p><strong>Provider:</strong> Twilio</p>
+                    <p><strong>TTS:</strong> OpenAI (voice: "alloy")</p>
+                    <p><strong>Direction:</strong> Inbound + outbound</p>
+                    <p><strong>Streaming:</strong> Enabled via Tailscale funnel</p>
+                    <p><strong>Webhooks:</strong> Public endpoint via funnel (Twilio needs public URL)</p>
+                </div>
+
+                <div class="info-box">
+                    <strong>GenHealth consideration:</strong> Voice calls require:
+                    <ul style="margin-top: 0.5rem;">
+                        <li>Twilio account + phone number</li>
+                        <li>Public webhook endpoint (Tailscale funnel or similar)</li>
+                        <li>OpenAI API key for TTS</li>
+                    </ul>
+                </div>
+            </div>
+            <span class="slide-number">5 / 18</span>
+        </section>
+
+        <!-- Slide 6: Workspace Structure -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Workspace Structure</h2>
+                
+                <p><strong>Root:</strong> <code>/Users/loki/assistant/</code></p>
+
+                <h3>Core Configuration Files</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>File</th>
+                            <th>Purpose</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>AGENTS.md</code></td>
+                            <td>Agent behavior rules, workflows, standards</td>
+                        </tr>
+                        <tr>
+                            <td><code>SOUL.md</code></td>
+                            <td>Personality, voice, conversational style</td>
+                        </tr>
+                        <tr>
+                            <td><code>USER.md</code></td>
+                            <td>User profile, preferences, context</td>
+                        </tr>
+                        <tr>
+                            <td><code>TOOLS.md</code></td>
+                            <td>Local config, contacts, credential paths</td>
+                        </tr>
+                        <tr>
+                            <td><code>MEMORY.md</code></td>
+                            <td>Long-term curated memory (main session only)</td>
+                        </tr>
+                        <tr>
+                            <td><code>HEARTBEAT.md</code></td>
+                            <td>Proactive check instructions</td>
+                        </tr>
+                        <tr>
+                            <td><code>SECURITY.md</code></td>
+                            <td>Defense rules, data handling policies</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Key Directories</h3>
+                <ul>
+                    <li><code>memory/</code> — Daily notes, email/Slack digests, handoffs, self-review</li>
+                    <li><code>brain/</code> — Obsidian-compatible task/idea vault</li>
+                    <li><code>agents/</code> — Sub-agent dispatch system</li>
+                    <li><code>templates/</code> — Checklists, style guides, reusable content</li>
+                    <li><code>output/</code> — Sub-agent deliverables (organized by agent/task)</li>
+                </ul>
+            </div>
+            <span class="slide-number">6 / 18</span>
+        </section>
+
+        <!-- Slide 7: Memory System -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Memory System</h2>
+                
+                <h3>Daily Context (Raw Logs)</h3>
+                <ul>
+                    <li><code>memory/YYYY-MM-DD.md</code> — What happened today (decisions, events, context)</li>
+                    <li><code>memory/email-digest/YYYY-MM-DD.md</code> — Email summaries</li>
+                    <li><code>memory/slack-digest/YYYY-MM-DD.md</code> — Slack activity summaries</li>
+                </ul>
+
+                <h3>Long-Term Memory</h3>
+                <div class="card">
+                    <p><strong>MEMORY.md</strong> — Curated long-term memory</p>
+                    <p style="margin-top: 0.5rem;">Only loaded in main session (1:1 with Mike). Contains personal context, lessons learned, significant events. Reviewed and updated periodically during heartbeats.</p>
+                </div>
+
+                <h3>Compaction & Continuity</h3>
+                <ul>
+                    <li><code>memory/HANDOFF.md</code> — Context transfer when conversation is compacted/reset</li>
+                    <li><code>memory/self-review.md</code> — Mistakes, fixes, lessons (prevents repeat errors)</li>
+                    <li><code>memory/heartbeat-state.json</code> — Tracks last check times for email, calendar, etc.</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Pattern:</strong> Daily files are raw. MEMORY.md is distilled. Handoff preserves nuance across restarts.
+                </div>
+            </div>
+            <span class="slide-number">7 / 18</span>
+        </section>
+
+        <!-- Slide 8: Task Management (Lokiban) -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Task Management: Lokiban</h2>
+                
+                <h3>Architecture</h3>
+                <ul>
+                    <li><strong>Backend:</strong> SQLite database + Express API (port 18790)</li>
+                    <li><strong>Frontend:</strong> Web dashboard (Tailscale port 8443)</li>
+                    <li><strong>PM2 process:</strong> <code>kanban-server</code></li>
+                    <li><strong>Sync:</strong> Auto-exports to <code>brain/tasks.md</code> (Obsidian-compatible)</li>
+                </ul>
+
+                <h3>Kanban Lanes</h3>
+                <p><strong>Flow:</strong> Capture → P2 → P1 → P0 → In Progress → Done → Later</p>
+
+                <h3>API-Driven Workflow</h3>
+                <div class="warning-box">
+                    <strong>Critical rule:</strong> NEVER edit <code>tasks.md</code> directly. Always use the API. SQLite is source of truth.
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Endpoint</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Create task</td>
+                            <td><code>POST /api/capture</code></td>
+                        </tr>
+                        <tr>
+                            <td>Update task</td>
+                            <td><code>POST /api/task/{id}</code></td>
+                        </tr>
+                        <tr>
+                            <td>Move task</td>
+                            <td><code>POST /api/task/{id}/move</code></td>
+                        </tr>
+                        <tr>
+                            <td>Complete task</td>
+                            <td><code>POST /api/task/{id}/complete</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <span class="slide-number">8 / 18</span>
+        </section>
+
+        <!-- Slide 9: Cron Jobs Part 1 (Morning) -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Cron Jobs: Morning Routine</h2>
+                
+                <p>All cron jobs managed via PM2. Model assignments optimize cost vs quality.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Job</th>
+                            <th>Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>6:00 AM</td>
+                            <td><strong>Daily comms memory</strong><br>Pull yesterday's emails/texts into daily note</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>7:00 AM</td>
+                            <td><strong>Morning task grooming</strong><br>Flag overdue, bump priorities, prepare day</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>7:30 AM</td>
+                            <td><strong>Slack digest</strong><br>Scan all monitored channels, summarize activity</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>8:00 AM</td>
+                            <td><strong>Lokiban daily git backup</strong><br>Commit tasks.md to git for version control</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>8:05 AM</td>
+                            <td><strong>Full daily digest</strong><br>Calendar + email + Slack + tasks → Slack DM to Mike</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>8:00 AM Mon</td>
+                            <td><strong>Weekly pipeline review</strong><br>CRM + deals, surface what needs attention</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>8:00 AM Sun</td>
+                            <td><strong>Analytics report</strong><br>Weekly traffic/conversion metrics for .md sites</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <span class="slide-number">9 / 18</span>
+        </section>
+
+        <!-- Slide 10: Cron Jobs Part 2 (Daytime) -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Cron Jobs: Daytime Operations</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Job</th>
+                            <th>Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>9:00 AM (weekdays)</td>
+                            <td><strong>.md blog publishing pipeline</strong><br>Convert approved drafts to HTML, deploy to sites</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>9:00 AM (Sun/Tue/Thu)</td>
+                            <td><strong>Security audit</strong><br>Check for leaked credentials, suspicious activity</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>9,11,13,15,17,19,21<br>(weekdays)</td>
+                            <td><strong>Heartbeat triage</strong><br>Check email, calendar, tasks, proactive suggestions<br><em>Circuit breaker: auto-disable after 3 errors</em></td>
+                            <td>Haiku 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>12:00 PM</td>
+                            <td><strong>Noon check-in</strong><br>Midday status, calendar reminders, task progress</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>4:00 PM</td>
+                            <td><strong>Final check-in</strong><br>End-of-workday summary, prep for evening</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>Every 3 days</td>
+                            <td><strong>.md metrics review</strong><br>Traffic trends, conversions, content performance</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="info-box">
+                    <strong>Heartbeat frequency:</strong> 7 checks per day during work hours. Uses cheap Haiku model. Circuit breaker prevents runaway failures.
+                </div>
+            </div>
+            <span class="slide-number">10 / 18</span>
+        </section>
+
+        <!-- Slide 11: Cron Jobs Part 3 (Evening) -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Cron Jobs: Evening & Night</h2>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Job</th>
+                            <th>Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>6:00 PM</td>
+                            <td><strong>Task auto-roll</strong><br>Move incomplete tasks to tomorrow, reset priorities</td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>8:00 PM</td>
+                            <td><strong>Nightly plan presentation</strong><br>Review day, prepare tomorrow's plan, send to Mike</td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                        <tr>
+                            <td>10:00 PM</td>
+                            <td><strong>Autonomous overnight work session</strong><br>Process backlog tasks, research, content generation<br><em>Runs unsupervised, saves results for morning review</em></td>
+                            <td>Sonnet 4.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Circuit Breakers & Safety</h3>
+                <ul>
+                    <li><strong>Auto-disable after 3 consecutive errors</strong> — Prevents runaway failures</li>
+                    <li><strong>Dedup check</strong> — Don't create duplicate failure tasks</li>
+                    <li><strong>Quiet hours (23:00-07:00)</strong> — No messages unless urgent</li>
+                    <li><strong>PM2 auto-stop</strong> — After 10+ restarts, assume broken and stop</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Overnight work:</strong> Autonomous session has full API access but operates in "review mode" — outputs go to designated folders for Mike's review in the morning.
+                </div>
+            </div>
+            <span class="slide-number">11 / 18</span>
+        </section>
+
+        <!-- Slide 12: Sub-Agent Architecture -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Sub-Agent Architecture</h2>
+                
+                <h3>Design Philosophy</h3>
+                <div class="info-box">
+                    <strong>Rule:</strong> If a task takes >30 seconds of active work → spawn a sub-agent.
+                    <br><br>
+                    Main session (Opus) handles conversation and decisions. Sub-agents (Sonnet) handle execution.
+                </div>
+
+                <h3>How It Works</h3>
+                <ul>
+                    <li>Main session spawns isolated Sonnet 4.5 sessions for heavy work</li>
+                    <li>Each sub-agent gets clear task description, context files, success criteria</li>
+                    <li>Output saved to <code>/output/{agent}/{task-slug}/</code></li>
+                    <li>Completion is push-based (auto-announces to main agent)</li>
+                </ul>
+
+                <h3>Dispatch System</h3>
+                <p><code>agents/dispatch.sh</code> — Checks Lokiban for tasks assigned to specific agents, spawns sub-agents automatically</p>
+
+                <h3>Limits</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Max Concurrent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Main tasks (P0/In Progress)</td>
+                            <td>4</td>
+                        </tr>
+                        <tr>
+                            <td>Sub-agents (total)</td>
+                            <td>8</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <span class="slide-number">12 / 18</span>
+        </section>
+
+        <!-- Slide 13: Skills & Plugins -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Skills & Plugins</h2>
+                
+                <h3>Communication & Collaboration</h3>
+                <ul>
+                    <li><strong>himalaya</strong> — IMAP/SMTP email (mike@mamv.co, mike@genhealth.ai)</li>
+                    <li><strong>gog</strong> — Google Workspace (Calendar, Gmail, Drive, Docs, Contacts)</li>
+                    <li><strong>slack</strong> — Slack messaging (GenHealth workspace)</li>
+                    <li><strong>imsg</strong> — iMessage CLI (macOS)</li>
+                    <li><strong>voice-call</strong> — Twilio voice calls + OpenAI TTS</li>
+                </ul>
+
+                <h3>Content & Research</h3>
+                <ul>
+                    <li><strong>web_search</strong> — Brave Search API</li>
+                    <li><strong>web_fetch</strong> — Extract readable content from URLs</li>
+                    <li><strong>summarize</strong> — Condense long content</li>
+                    <li><strong>presentations</strong> — Generate HTML slide decks</li>
+                    <li><strong>nano-banana-pro</strong> — Image generation</li>
+                </ul>
+
+                <h3>Development & Automation</h3>
+                <ul>
+                    <li><strong>github</strong> — Repo management, PRs, issues</li>
+                    <li><strong>coding-agent</strong> — Autonomous code generation</li>
+                    <li><strong>peekaboo</strong> — macOS UI automation</li>
+                </ul>
+
+                <h3>Custom Skills</h3>
+                <ul>
+                    <li><strong>attio</strong> — CRM integration (GenHealth customer data)</li>
+                    <li><strong>bird</strong> — Twitter/X automation</li>
+                    <li><strong>qmd</strong> — Local workspace search (cross-references all files)</li>
+                </ul>
+            </div>
+            <span class="slide-number">13 / 18</span>
+        </section>
+
+        <!-- Slide 14: Local Apps & Services -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Local Apps & Services</h2>
+                
+                <p><strong>Base URL:</strong> <code>https://mikes-mac-mini.platy-paradise.ts.net</code></p>
+
+                <h3>Exposed via Tailscale Serve</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>App</th>
+                            <th>URL</th>
+                            <th>Port</th>
+                            <th>Access</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>OpenClaw Gateway</td>
+                            <td><code>/</code></td>
+                            <td>18789</td>
+                            <td>Public (funnel)</td>
+                        </tr>
+                        <tr>
+                            <td>Lokiban (Kanban)</td>
+                            <td><code>:8443/</code></td>
+                            <td>18790</td>
+                            <td>Tailnet only</td>
+                        </tr>
+                        <tr>
+                            <td>MD Tracker (Q&A)</td>
+                            <td><code>:8444/</code></td>
+                            <td>18793</td>
+                            <td>Tailnet only</td>
+                        </tr>
+                        <tr>
+                            <td>MD Analytics</td>
+                            <td><code>/analytics</code></td>
+                            <td>18795</td>
+                            <td>Tailnet only</td>
+                        </tr>
+                        <tr>
+                            <td>Preview Server</td>
+                            <td><code>/preview</code></td>
+                            <td>18850</td>
+                            <td>Tailnet only</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Local Only (not exposed)</h3>
+                <ul>
+                    <li><strong>Selfware CRM:</strong> Port 18800 (API only, credentials in <code>ainc/crm/.agent-keys.json</code>)</li>
+                    <li><strong>anxiety.md dev:</strong> Port 3847 (local development)</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Port strategy:</strong> Subpath routing (<code>/analytics</code>) for apps that support it. Dedicated ports (<code>:8443</code>) for apps with absolute path routing.
+                </div>
+            </div>
+            <span class="slide-number">14 / 18</span>
+        </section>
+
+        <!-- Slide 15: Security & Safety -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Security & Safety</h2>
+                
+                <h3>Credential Management</h3>
+                <div class="card">
+                    <p><strong>Never hardcode keys.</strong> All credentials stored in config files:</p>
+                    <ul style="margin-top: 0.5rem;">
+                        <li><code>~/.config/attio/api_key</code></li>
+                        <li><code>~/.config/slack/genhealth_user_token</code></li>
+                        <li><code>~/.config/himalaya/config.toml</code></li>
+                        <li><code>~/.config/cloudflare/api_token</code></li>
+                        <li>etc. (see TOOLS.md for full list)</li>
+                    </ul>
+                </div>
+
+                <h3>Access Control</h3>
+                <ul>
+                    <li><strong>Gateway:</strong> Loopback-bound (127.0.0.1), only accessible via Tailscale</li>
+                    <li><strong>Tailscale:</strong> Private network, funnel only for webhooks</li>
+                    <li><strong>Slack:</strong> DM/group allowlists, requireMention in public channels</li>
+                    <li><strong>iMessage:</strong> Allowlist-based DM policy</li>
+                </ul>
+
+                <h3>Data Handling</h3>
+                <ul>
+                    <li><strong>MEMORY.md:</strong> Only loaded in main session (1:1), never in group chats</li>
+                    <li><strong>No exfiltration:</strong> Private data stays local unless explicitly shared</li>
+                    <li><strong>trash > rm:</strong> Recoverable deletion by default</li>
+                </ul>
+
+                <h3>Circuit Breakers</h3>
+                <ul>
+                    <li>Cron jobs auto-disable after 3 consecutive failures</li>
+                    <li>PM2 processes auto-stop after 10+ restarts</li>
+                    <li>Context handoff at 70%+ token usage (prevents truncation)</li>
+                </ul>
+            </div>
+            <span class="slide-number">15 / 18</span>
+        </section>
+
+        <!-- Slide 16: What GenHealth Would Need -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>GenHealth Deployment Requirements</h2>
+                
+                <h3>Infrastructure</h3>
+                <ul>
+                    <li><strong>Hardware:</strong> Dedicated Mac mini OR cloud VM (Linux)</li>
+                    <li><strong>OS:</strong> macOS (for iMessage) or Linux (Slack-only)</li>
+                    <li><strong>Node.js:</strong> v25.x or later</li>
+                    <li><strong>PM2:</strong> For process management</li>
+                    <li><strong>Tailscale:</strong> For secure remote access</li>
+                </ul>
+
+                <h3>Services & Accounts</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Required?</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Anthropic Claude</td>
+                            <td>✅ Yes</td>
+                            <td>Max plan OR API keys</td>
+                        </tr>
+                        <tr>
+                            <td>Slack (GenHealth workspace)</td>
+                            <td>✅ Yes</td>
+                            <td>Bot token + app token (Socket Mode)</td>
+                        </tr>
+                        <tr>
+                            <td>Tailscale</td>
+                            <td>✅ Yes</td>
+                            <td>For remote access</td>
+                        </tr>
+                        <tr>
+                            <td>iMessage</td>
+                            <td>❌ No</td>
+                            <td>Personal use only</td>
+                        </tr>
+                        <tr>
+                            <td>Twilio (voice calls)</td>
+                            <td>⚠️ Optional</td>
+                            <td>If phone support needed</td>
+                        </tr>
+                        <tr>
+                            <td>Google Workspace</td>
+                            <td>⚠️ Optional</td>
+                            <td>If Calendar/Gmail integration needed</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <span class="slide-number">16 / 18</span>
+        </section>
+
+        <!-- Slide 17: Cron Job Recommendations for GenHealth -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Cron Jobs: GenHealth Recommendations</h2>
+                
+                <h3>Essential (Keep)</h3>
+                <ul>
+                    <li><strong>Morning digest</strong> — Slack + Calendar + Tasks summary</li>
+                    <li><strong>Heartbeat triage</strong> — Proactive checks (reduced frequency OK)</li>
+                    <li><strong>Task auto-roll</strong> — End-of-day task management</li>
+                    <li><strong>Lokiban backup</strong> — Daily git backup of tasks</li>
+                    <li><strong>Security audit</strong> — Periodic credential leak checks</li>
+                </ul>
+
+                <h3>Work-Relevant (Adapt)</h3>
+                <ul>
+                    <li><strong>Weekly pipeline review</strong> — CRM + deals (if using Attio or similar)</li>
+                    <li><strong>Noon/afternoon check-ins</strong> — Adjust timing to work schedule</li>
+                </ul>
+
+                <h3>Personal (Remove)</h3>
+                <ul>
+                    <li><strong>Daily comms memory</strong> — Personal email/text processing</li>
+                    <li><strong>.md blog publishing</strong> — Mike's side venture</li>
+                    <li><strong>.md metrics review</strong> — Mike's side venture</li>
+                    <li><strong>Analytics report</strong> — Mike's side venture</li>
+                    <li><strong>Nightly plan presentation</strong> — Personal routine</li>
+                    <li><strong>Overnight work session</strong> — Personal side projects</li>
+                </ul>
+
+                <div class="info-box">
+                    <strong>Customization tip:</strong> Start minimal (digest + heartbeats + backups), then add cron jobs based on actual GenHealth workflows.
+                </div>
+            </div>
+            <span class="slide-number">17 / 18</span>
+        </section>
+
+        <!-- Slide 18: Next Steps -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>Next Steps for GenHealth Deployment</h2>
+                
+                <h3>Phase 1: Foundation (Week 1)</h3>
+                <ol>
+                    <li>Provision Mac mini or cloud VM</li>
+                    <li>Install Node.js, PM2, Tailscale</li>
+                    <li>Install OpenClaw globally via npm</li>
+                    <li>Set up Anthropic auth (Claude Max or API keys)</li>
+                    <li>Configure Tailscale serve for remote access</li>
+                </ol>
+
+                <h3>Phase 2: Workspace Setup (Week 1-2)</h3>
+                <ol>
+                    <li>Create workspace directory (<code>/home/genhealth/assistant</code> or similar)</li>
+                    <li>Adapt config files (AGENTS.md, SOUL.md, USER.md, TOOLS.md, SECURITY.md)</li>
+                    <li>Set up Lokiban (kanban board)</li>
+                    <li>Initialize memory system (daily notes, digest folders)</li>
+                </ol>
+
+                <h3>Phase 3: Integrations (Week 2)</h3>
+                <ol>
+                    <li>Configure Slack bot (Socket Mode, tokens, allowlists)</li>
+                    <li>Set up credential storage (<code>~/.config/</code> paths)</li>
+                    <li>Test message send/receive via Slack</li>
+                    <li>Configure minimal cron jobs (digest, heartbeat, backup)</li>
+                </ol>
+
+                <h3>Phase 4: Testing & Iteration (Week 3+)</h3>
+                <ol>
+                    <li>Test sub-agent spawning and output delivery</li>
+                    <li>Adjust cron frequency based on team needs</li>
+                    <li>Add custom skills as needed (CRM, internal tools)</li>
+                    <li>Monitor, tune, document edge cases</li>
+                </ol>
+
+                <div class="warning-box">
+                    <strong>This document is a snapshot.</strong> Mike's setup evolves daily. Review actual config files for latest patterns.
+                </div>
+            </div>
+            <span class="slide-number">18 / 18</span>
+        </section>
+    </div>
+
+    <div class="nav-hint">↓ Scroll or use arrow keys to navigate</div>
+
+    <script>
+        // Progress bar update
+        const slides = document.querySelectorAll('.slide');
+        const progressFill = document.getElementById('progress-fill');
+        const slidesContainer = document.getElementById('slides');
+
+        slidesContainer.addEventListener('scroll', () => {
+            const scrollTop = slidesContainer.scrollTop;
+            const scrollHeight = slidesContainer.scrollHeight - slidesContainer.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            progressFill.style.width = progress + '%';
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const currentScroll = slidesContainer.scrollTop;
+            const slideHeight = window.innerHeight;
+
+            if (e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                slidesContainer.scrollTo({
+                    top: currentScroll + slideHeight,
+                    behavior: 'smooth'
+                });
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                slidesContainer.scrollTo({
+                    top: currentScroll - slideHeight,
+                    behavior: 'smooth'
+                });
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                slidesContainer.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                slidesContainer.scrollTo({
+                    top: slidesContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+        });
+
+        // Hide nav hint after first interaction
+        let hasScrolled = false;
+        slidesContainer.addEventListener('scroll', () => {
+            if (!hasScrolled) {
+                document.querySelector('.nav-hint').style.opacity = '0';
+                hasScrolled = true;
+            }
+        });
+    </script>
+</body>
+</html>
