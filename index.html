@@ -253,7 +253,7 @@
                 <p class="meta">Architecture documentation for Mike's personal AI assistant instance<br>
                 Version: OpenClaw v2026.2.17 | February 2026</p>
             </div>
-            <span class="slide-number">1 / 25</span>
+            <span class="slide-number">1 / 26</span>
         </section>
 
         <!-- Slide 2: Infrastructure Overview -->
@@ -285,7 +285,7 @@
                     <strong>Note:</strong> Gateway is bound to loopback (127.0.0.1) for security. All external access goes through Tailscale.
                 </div>
             </div>
-            <span class="slide-number">2 / 25</span>
+            <span class="slide-number">2 / 26</span>
         </section>
 
         <!-- Slide 3: Authentication & Models -->
@@ -333,7 +333,7 @@
                     <strong>Cost optimization:</strong> Main session uses Opus for quality. Automated tasks use Sonnet (good quality, lower cost). Heartbeats use Haiku (very cheap, fast).
                 </div>
             </div>
-            <span class="slide-number">3 / 25</span>
+            <span class="slide-number">3 / 26</span>
         </section>
 
         <!-- Slide 4: Channel Integrations - Slack -->
@@ -373,7 +373,7 @@
                     <strong>Important:</strong> The bot token has limited read scopes. For reading channel history, use the user token + <code>search.messages</code> API.
                 </div>
             </div>
-            <span class="slide-number">4 / 25</span>
+            <span class="slide-number">4 / 26</span>
         </section>
 
         <!-- Slide 5: Channel Integrations - iMessage & Voice -->
@@ -407,7 +407,7 @@
                     </ul>
                 </div>
             </div>
-            <span class="slide-number">5 / 25</span>
+            <span class="slide-number">5 / 26</span>
         </section>
 
         <!-- Slide 6: Workspace Structure -->
@@ -466,7 +466,7 @@
                     <li><code>output/</code> — Sub-agent deliverables (organized by agent/task)</li>
                 </ul>
             </div>
-            <span class="slide-number">6 / 25</span>
+            <span class="slide-number">6 / 26</span>
         </section>
 
         <!-- Slide 7: Memory System -->
@@ -498,7 +498,7 @@
                     <strong>Pattern:</strong> Daily files are raw. MEMORY.md is distilled. Handoff preserves nuance across restarts.
                 </div>
             </div>
-            <span class="slide-number">7 / 25</span>
+            <span class="slide-number">7 / 26</span>
         </section>
 
         <!-- Slide 8: Task Management (Lokiban) -->
@@ -549,7 +549,7 @@
                     </tbody>
                 </table>
             </div>
-            <span class="slide-number">8 / 25</span>
+            <span class="slide-number">8 / 26</span>
         </section>
 
         <!-- Slide 9: Cron Jobs Part 1 (Morning) -->
@@ -606,7 +606,7 @@
                     </tbody>
                 </table>
             </div>
-            <span class="slide-number">9 / 25</span>
+            <span class="slide-number">9 / 26</span>
         </section>
 
         <!-- Slide 10: Cron Jobs Part 2 (Daytime) -->
@@ -660,7 +660,7 @@
                     <strong>Heartbeat frequency:</strong> 7 checks per day during work hours. Uses cheap Haiku model. Circuit breaker prevents runaway failures.
                 </div>
             </div>
-            <span class="slide-number">10 / 25</span>
+            <span class="slide-number">10 / 26</span>
         </section>
 
         <!-- Slide 11: Cron Jobs Part 3 (Evening) -->
@@ -707,7 +707,7 @@
                     <strong>Overnight work:</strong> Autonomous session has full API access but operates in "review mode" — outputs go to designated folders for Mike's review in the morning.
                 </div>
             </div>
-            <span class="slide-number">11 / 25</span>
+            <span class="slide-number">11 / 26</span>
         </section>
 
         <!-- Slide 12: Sub-Agent Architecture -->
@@ -753,7 +753,7 @@
                     </tbody>
                 </table>
             </div>
-            <span class="slide-number">12 / 25</span>
+            <span class="slide-number">12 / 26</span>
         </section>
 
         <!-- Slide 13: Skills & Plugins -->
@@ -793,7 +793,7 @@
                     <li><strong>qmd</strong> — Local workspace search (cross-references all files)</li>
                 </ul>
             </div>
-            <span class="slide-number">13 / 25</span>
+            <span class="slide-number">13 / 26</span>
         </section>
 
         <!-- Slide 14: Local Apps & Services -->
@@ -857,7 +857,7 @@
                     <strong>Port strategy:</strong> Subpath routing (<code>/analytics</code>) for apps that support it. Dedicated ports (<code>:8443</code>) for apps with absolute path routing.
                 </div>
             </div>
-            <span class="slide-number">14 / 25</span>
+            <span class="slide-number">14 / 26</span>
         </section>
 
         <!-- Slide 15: Security & Safety -->
@@ -899,7 +899,7 @@
                     <li>Context handoff at 70%+ token usage (prevents truncation)</li>
                 </ul>
             </div>
-            <span class="slide-number">15 / 25</span>
+            <span class="slide-number">15 / 26</span>
         </section>
 
         <!-- Slide 16: What GenHealth Would Need -->
@@ -959,7 +959,7 @@
                     </tbody>
                 </table>
             </div>
-            <span class="slide-number">16 / 25</span>
+            <span class="slide-number">16 / 26</span>
         </section>
 
         <!-- Slide 17: Cron Job Recommendations for GenHealth -->
@@ -996,7 +996,7 @@
                     <strong>Customization tip:</strong> Start minimal (digest + heartbeats + backups), then add cron jobs based on actual GenHealth workflows.
                 </div>
             </div>
-            <span class="slide-number">17 / 25</span>
+            <span class="slide-number">17 / 26</span>
         </section>
 
         <!-- Slide 18: Next Steps -->
@@ -1041,7 +1041,7 @@
                     <strong>This document is a snapshot.</strong> Mike's setup evolves daily. Review actual config files for latest patterns.
                 </div>
             </div>
-            <span class="slide-number">18 / 25</span>
+            <span class="slide-number">18 / 26</span>
         </section>
 
         <!-- APPENDIX: Core Config Files -->
@@ -1068,7 +1068,7 @@
                     <strong>Add your comments directly on these slides</strong> — mark what to tweak for GenHealth's config.
                 </div>
             </div>
-            <span class="slide-number">19 / 25</span>
+            <span class="slide-number">19 / 26</span>
         </section>
 
         <!-- Slide 20: IDENTITY.md -->
@@ -1086,7 +1086,7 @@
                     <strong>Customize:</strong> Name, emoji, vibe for GenHealth's agent.
                 </div>
             </div>
-            <span class="slide-number">20 / 25</span>
+            <span class="slide-number">20 / 26</span>
         </section>
 
         <!-- Slide 21: SOUL.md -->
@@ -1168,7 +1168,7 @@ Update them. They're how you persist.</code></pre>
                     <strong>Customize:</strong> Personality and tone. Adjust for GenHealth's culture and communication style.
                 </div>
             </div>
-            <span class="slide-number">21 / 25</span>
+            <span class="slide-number">21 / 26</span>
         </section>
 
         <!-- Slide 22: AGENTS.md -->
@@ -1255,7 +1255,7 @@ Stay quiet when: late night, human is busy, nothing new.
                     <strong>Customize:</strong> Workspace behavior, memory paths, safety rules, subagent thresholds.
                 </div>
             </div>
-            <span class="slide-number">22 / 25</span>
+            <span class="slide-number">22 / 26</span>
         </section>
 
         <!-- Slide 23: USER.md -->
@@ -1315,10 +1315,218 @@ Stay quiet when: late night, human is busy, nothing new.
                     <strong>Customize:</strong> One USER.md per person using OpenClaw. Defines context so the agent understands who it's helping.
                 </div>
             </div>
-            <span class="slide-number">23 / 25</span>
+            <span class="slide-number">23 / 26</span>
         </section>
 
-        <!-- Slide 24: HEARTBEAT.md -->
+        <!-- Slide 24: Multi-User USER.md Pattern -->
+        <section class="slide">
+            <div class="slide-content">
+                <h2>USER.md — Multi-User Pattern (Recommended)</h2>
+                <p>Instead of one USER.md, create a <code>users/</code> directory. The agent loads the right file based on who's messaging.</p>
+                
+                <pre style="font-size: 0.55em; line-height: 1.3; max-height: 18vh; overflow-y: auto; margin-bottom: 12px;"><code>workspace/
+  users/
+    _default.md          # Fallback for unknown users
+    ricky-sahu.md        # CEO
+    ethan-siegel.md      # CPO
+    mike-maseda.md       # Head of Sales & Ops
+    lauren-eder.md       # Business Development
+    tony-saraiva.md      # Sales
+    al-seeley.md         # Head of Security & Compliance
+    troy.md              # Implementation
+    tyler-ilunga.md      # Team Member
+    heeseon-yeon.md      # Team Member
+    alex-sotiropoulos.md # Engineer
+    mccoy-doherty.md     # Engineer
+    samantha-caruso.md   # DME Billing Specialist
+    corrina-korzeb.md    # Billing/Consulting</code></pre>
+
+                <h3>AGENTS.md boot sequence change:</h3>
+                <pre style="font-size: 0.65em; line-height: 1.3; margin-bottom: 12px;"><code>## Every Session
+1. Read SOUL.md
+2. Read users/{sender_slack_id}.md (or users/_default.md)
+3. Read SECURITY.md
+4. Read memory/HANDOFF.md
+...</code></pre>
+
+                <h3>Example: ricky-sahu.md</h3>
+                <pre style="font-size: 0.6em; line-height: 1.3; max-height: 30vh; overflow-y: auto;"><code># Ricky Sahu — CEO
+
+## Basics
+- **Slack ID:** U05XXXXXXXX
+- **Email:** ricky@genhealth.ai
+- **Location:** Boston / DC area
+- **Timezone:** America/New_York
+
+## Role & Focus
+- Enterprise deals (Optum, Healthfirst, Sedgwick)
+- Partnerships (MCG, 1upHealth, UST, Accenture)
+- Compliance & regulatory (BEP, CMS)
+- Board & investor relations (Craft Ventures, Obvious Ventures)
+- Company strategy & fundraising
+
+## What Ricky Needs From the Agent
+- Meeting prep (pull context on prospects before calls)
+- Email drafts for enterprise outreach
+- Pipeline summaries on demand
+- Board deck data pulls
+- Quick lookups (competitor info, regulation details)
+
+## Communication Style
+- Strategic thinker — wants big picture first, details on request
+- Fast-paced — keep responses concise
+- Comfortable with AI — doesn't need hand-holding
+
+## Key Relationships
+| Person | Who | Notes |
+|--------|-----|-------|
+| Ethan Siegel | CPO/CTO, Co-founder | Technical counterpart |
+| Mike Maseda | Head of Sales & Ops | Pipeline & operations |
+| Katy Ficken | Craft Ventures | Investor finance contact |
+| Jeff Fluhr | Craft Ventures | Board member |
+| Dean Myers | Optum | Enterprise sponsor |
+| Tia Yu | GuideHealth | Key customer reference |
+
+---
+
+# Ethan Siegel — CPO/CTO
+
+## Basics
+- **Slack ID:** U05XXXXXXXX
+- **Email:** ethan@genhealth.ai
+- **Timezone:** America/New_York
+
+## Role & Focus
+- Product & engineering leadership
+- Client onboarding & implementation (Apollo, Soundview, BCBS AZ)
+- Hiring (engineering, GTM)
+- Technical architecture decisions
+
+## What Ethan Needs From the Agent
+- Engineering task triage from Slack/Linear
+- PR and code review summaries
+- Candidate evaluation prep
+- Client onboarding status tracking
+- Technical doc lookups
+
+## Communication Style
+- Detail-oriented — wants specifics and data
+- Direct — no fluff
+- Prefers structured output (tables, bullet points)
+
+---
+
+# Mike Maseda — Head of Sales & Ops
+
+## Basics
+- **Slack ID:** U05RPT0DJMN
+- **Email:** mike@genhealth.ai
+- **Timezone:** America/New_York
+
+## Role & Focus
+- Sales pipeline management
+- Outbound campaigns (Apollo, NikoHealth, eCW)
+- VGM partnership & reporting
+- Financial liaison (Kruze, Eclipse billing)
+- Hiring coordination
+- Conference logistics (Medtrade, AHIP MMDC)
+
+## What Mike Needs From the Agent
+- Email triage and draft responses
+- Pipeline and deal status summaries
+- Meeting prep with prospect context
+- Task management and follow-up tracking
+- Conference logistics coordination
+
+## Communication Style
+- Very direct — skip preamble, just answer
+- Action-oriented — do it, then report
+- Prefers tables and bullet points over paragraphs
+- Doesn't want to be asked for permission on routine tasks
+
+---
+
+# Lauren Eder — Business Development
+
+## Basics
+- **Slack ID:** U05XXXXXXXX
+- **Email:** lauren@genhealth.ai
+- **Phone:** (630) 464-7667
+- **Timezone:** America/New_York
+
+## Role & Focus
+- Prospect follow-ups (Gaboro, EBS, Eclipse, LHSS, Heartstrong)
+- Demo presentations
+- Outbound sequencing
+
+## What Lauren Needs From the Agent
+- Prospect research before calls
+- Email follow-up drafts
+- CRM data pulls
+- Demo prep materials
+
+---
+
+# Tony Saraiva — Sales
+
+## Basics
+- **Slack ID:** U05XXXXXXXX
+- **Email:** tony@genhealth.ai
+- **Phone:** 617-701-7102
+- **Timezone:** America/New_York
+
+## Role & Focus
+- DME prospects (Medi-Rents, DDM)
+- Outbound sales
+
+## What Tony Needs From the Agent
+- Prospect research
+- Email drafts
+- Competitive intel
+
+---
+
+# Al Seeley — Head of Security & Compliance
+
+## Basics
+- **Slack ID:** U05XXXXXXXX
+- **Email:** al@genhealth.ai
+- **Timezone:** America/New_York
+
+## Role & Focus
+- CMS compliance (CAP, DUA, EPPE, DMP SAQ)
+- Server decommissioning
+- GPU/equipment procurement
+- Security audits
+
+## What Al Needs From the Agent
+- Compliance deadline tracking
+- Document lookups (CMS regs, HIPAA)
+- Security audit summaries
+- Vendor evaluation research
+
+---
+
+# _default.md (Fallback)
+
+## Basics
+- **Company:** GenHealth.ai
+- **Industry:** Healthcare AI — workflow automation
+
+## Default Behavior
+- Be helpful but cautious with company-sensitive info
+- Don't share pipeline data, financials, or internal strategy
+- Direct complex requests to Mike or Ethan
+- Keep responses professional and concise</code></pre>
+
+                <div class="info-box">
+                    <strong>Key advantage:</strong> One OpenClaw instance, one subscription, personalized behavior per person. The agent reads the right file based on Slack sender ID.
+                </div>
+            </div>
+            <span class="slide-number">24 / 26</span>
+        </section>
+
+        <!-- Slide 25: HEARTBEAT.md -->
         <section class="slide">
             <div class="slide-content">
                 <h2>HEARTBEAT.md</h2>
@@ -1389,7 +1597,7 @@ If you identify a miss: Log it to memory/self-review.md</code></pre>
                     <strong>Customize:</strong> Slack channels, quiet hours, health check targets for GenHealth's setup.
                 </div>
             </div>
-            <span class="slide-number">24 / 25</span>
+            <span class="slide-number">25 / 26</span>
         </section>
 
         <!-- Slide 25: openclaw.json -->
@@ -1482,7 +1690,7 @@ If you identify a miss: Log it to memory/self-review.md</code></pre>
                     <strong>Customize:</strong> Add channels (Slack, email), plugins, and auth. Comments show what to change.
                 </div>
             </div>
-            <span class="slide-number">25 / 25</span>
+            <span class="slide-number">26 / 26</span>
         </section>
     </div>
 
